@@ -21,6 +21,12 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
         KeyCode::Left => {
             app.decrement_counter();
         }
+        KeyCode::Char('a') => {
+            app.change_state_to_a();
+        }
+        KeyCode::Char('b') => {
+            app.change_state_to_b();
+        }
         // Other handlers you could add here.
         _ => {}
     }
