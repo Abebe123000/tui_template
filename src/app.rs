@@ -1,9 +1,12 @@
+use crate::app::AppState::StateA;
+use crate::app::AppState::StateB;
+use std::collections::HashMap;
 use std::error;
 
 /// Application result type.
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
 
-#[derive(Debug)]
+#[derive(Debug, Eq, Hash, PartialEq, Clone, Copy)]
 pub enum AppState {
     StateA,
     StateB,
@@ -17,16 +20,19 @@ pub struct App {
     /// counter
     pub counter: u8,
     pub state: AppState,
-    pub message: String,
+    pub message_map: HashMap<AppState, String>,
 }
 
 impl Default for App {
     fn default() -> Self {
+        let mut message_map = HashMap::new();
+        message_map.insert(StateA, String::from("aaa"));
+        message_map.insert(StateB, String::from("bbb"));
         Self {
             running: true,
             counter: 0,
             state: AppState::StateA,
-            message: String::from("aaa"),
+            message_map: message_map,
         }
     }
 }
@@ -58,11 +64,17 @@ impl App {
     }
 
     pub fn get_message(&self) -> &str {
-        &self.message
+        match self.message_map.get(&self.state) {
+            Some(string) => &string,
+            _ => "",
+        }
     }
 
     pub fn add_message(&mut self, str: &str) {
-        self.message = self.message.clone() + str;
+        if let Some(string) = self.message_map.get(&self.state) {
+            self.message_map
+                .insert(self.state, string.to_owned() + &str);
+        }
     }
 
     pub fn change_state_to_a(&mut self) {
