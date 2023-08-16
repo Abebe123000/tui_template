@@ -17,6 +17,7 @@ pub struct App {
     /// counter
     pub counter: u8,
     pub state: AppState,
+    pub message: String,
 }
 
 impl Default for App {
@@ -25,6 +26,7 @@ impl Default for App {
             running: true,
             counter: 0,
             state: AppState::StateA,
+            message: String::from("aaa"),
         }
     }
 }
@@ -55,11 +57,12 @@ impl App {
         }
     }
 
-    pub fn message(&self) -> &str {
-        match self.state {
-            AppState::StateA => "This is state A",
-            AppState::StateB => "This is state B",
-        }
+    pub fn get_message(&self) -> &str {
+        &self.message
+    }
+
+    pub fn add_message(&mut self, str: &str) {
+        self.message = self.message.clone() + str;
     }
 
     pub fn change_state_to_a(&mut self) {
