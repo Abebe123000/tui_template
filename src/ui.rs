@@ -15,7 +15,7 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
     // - https://docs.rs/ratatui/latest/ratatui/widgets/index.html
     // - https://github.com/ratatui-org/ratatui/tree/master/examples
     frame.render_widget(
-        Paragraph::new(app.message())
+        Paragraph::new(app.get_message())
             .block(
                 Block::default()
                     .title("Template")
