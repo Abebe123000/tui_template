@@ -3,6 +3,12 @@ use std::error;
 /// Application result type.
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
 
+#[derive(Debug)]
+pub enum AppState {
+    StateA,
+    StateB,
+}
+
 /// Application.
 #[derive(Debug)]
 pub struct App {
@@ -10,6 +16,7 @@ pub struct App {
     pub running: bool,
     /// counter
     pub counter: u8,
+    pub state: AppState,
 }
 
 impl Default for App {
@@ -17,6 +24,7 @@ impl Default for App {
         Self {
             running: true,
             counter: 0,
+            state: AppState::StateA,
         }
     }
 }
@@ -45,5 +53,20 @@ impl App {
         if let Some(res) = self.counter.checked_sub(1) {
             self.counter = res;
         }
+    }
+
+    pub fn message(&self) -> &str {
+        match self.state {
+            AppState::StateA => "This is state A",
+            AppState::StateB => "This is state B",
+        }
+    }
+
+    pub fn change_state_to_a(&mut self) {
+        self.state = AppState::StateA;
+    }
+
+    pub fn change_state_to_b(&mut self) {
+        self.state = AppState::StateB;
     }
 }
