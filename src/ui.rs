@@ -7,6 +7,8 @@ use tui::{
 };
 
 use crate::app::App;
+use crate::app_mode::AppMode;
+use crate::typing_mode_model::TypingModeModel;
 
 /// Renders the user interface widgets.
 pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
@@ -14,17 +16,21 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
     // See the following resources:
     // - https://docs.rs/ratatui/latest/ratatui/widgets/index.html
     // - https://github.com/ratatui-org/ratatui/tree/master/examples
-    frame.render_widget(
-        Paragraph::new(app.get_message())
-            .block(
-                Block::default()
-                    .title("Template")
-                    .title_alignment(Alignment::Center)
-                    .borders(Borders::ALL)
-                    .border_type(BorderType::Rounded),
-            )
-            .style(Style::default().fg(Color::Cyan).bg(Color::Black))
-            .alignment(Alignment::Center),
-        frame.size(),
-    )
+    let appMode = app.mode.clone();
+    match appMode {
+        AppMode::Typing(model) => frame.render_widget(
+            Paragraph::new(model.input_str)
+                .block(
+                    Block::default()
+                        .title("Template")
+                        .title_alignment(Alignment::Center)
+                        .borders(Borders::ALL)
+                        .border_type(BorderType::Rounded),
+                )
+                .style(Style::default().fg(Color::Cyan).bg(Color::Black))
+                .alignment(Alignment::Center),
+            frame.size(),
+        ),
+        _ => {}
+    }
 }
