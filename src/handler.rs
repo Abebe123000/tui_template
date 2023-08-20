@@ -23,7 +23,6 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
                 AppMode::Typing(model) => {
                     handle_key_events_for_type(key_event, app, model)?;
                 }
-                _ => {}
             }
         }
     }

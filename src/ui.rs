@@ -8,7 +8,6 @@ use tui::{
 
 use crate::app::App;
 use crate::app_mode::AppMode;
-use crate::typing_mode_model::TypingModeModel;
 
 /// Renders the user interface widgets.
 pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
@@ -16,8 +15,8 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
     // See the following resources:
     // - https://docs.rs/ratatui/latest/ratatui/widgets/index.html
     // - https://github.com/ratatui-org/ratatui/tree/master/examples
-    let appMode = app.mode.clone();
-    match appMode {
+    let app_mode = app.mode.clone();
+    match app_mode {
         AppMode::Typing(model) => frame.render_widget(
             Paragraph::new(model.input_str)
                 .block(
@@ -31,6 +30,5 @@ pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
                 .alignment(Alignment::Center),
             frame.size(),
         ),
-        _ => {}
     }
 }
